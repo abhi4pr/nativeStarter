@@ -33,13 +33,13 @@ export default class customimg extends Component {
       
         <View style={styles.sideMenuContainer}>
         <Image
-          source={require('../assets/single.jpg')}
+          source={require('../assets/drwr.png')}
           style={styles.sideMenuProfileIcon}
         />
         <View
           style={{
             width: '100%',
-            height: 1,
+            height: 0,
             backgroundColor: '#e2e2e2',
             marginTop: 1,
           }}

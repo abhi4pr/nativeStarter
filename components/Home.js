@@ -2,8 +2,11 @@ import React, {Component} from 'react';
 import {ActivityIndicator, RefreshControl, FlatList, ScrollView, StyleSheet, Text, View, Button, TextInput, TouchableOpacity, ListView, Image} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-community/async-storage';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class Home extends Component {
+
+  static navigationOptions = { header: null }
 
   constructor(props) {
     super(props);
@@ -15,7 +18,7 @@ export default class Home extends Component {
     };
   }
 
-  GetData(){
+  GetTData(){
     fetch("https://priyaransore.com/balance/api/teacherlist")
     .then(response => response.json())
     .then((responseJson)=> {
@@ -28,13 +31,32 @@ export default class Home extends Component {
     .catch(error => console.log(error))
   }
 
-  componentDidMount(){
-    this.GetData();
+  GetUData(){
+    fetch("https://priyaransore.com/balance/api/userlist")
+    .then(response => response.json())
+    .then((responseJson)=> {
+      this.setState({ 
+        refreshing: false,
+        dataSource: responseJson,
+        loading: false
+      })
+     })
+    .catch(error => console.log(error))
+  }
+
+  async componentDidMount(){
+    let userDetail = await AsyncStorage.getItem('user');
+    userDetail = JSON.parse(userDetail);
+
+    if(userDetail[0].uroll == 'user'){      
+      this.GetTData();
+    }else{
+      this.GetUData();
+    }
   }
 
   onRefresh() {
     this.setState({ dataSource: [] });
-    this.GetData();
   }
 
   toggleDrawer = () => {
@@ -53,12 +75,17 @@ export default class Home extends Component {
         <TouchableOpacity onPress={this.toggleDrawer.bind(this)}>
           <Image
             source={require('../assets/drawer.png')}
-            style={{ width:25, height:25, marginLeft:10, marginTop:10, marginBottom:10 }}
+            style={{ width:25, height:35, marginLeft:10, marginTop:10, marginBottom:10 }}
           />
         </TouchableOpacity>
-          <Text style={{fontSize:20,marginLeft:100,marginTop:7}}>
+          <Text style={{fontSize:20,marginLeft:100,marginTop:11}}>
             Welcome
           </Text>
+        <TouchableOpacity onPress={()=> this.props.navigation.navigate('Search')}>
+            <Icon name="md-search" size={30} color="black" 
+             style={{ width:25, height:35, marginLeft:94, marginTop:14, marginBottom:10 }}
+            />
+        </TouchableOpacity>  
        </View>
 
       <ScrollView>
@@ -105,12 +132,6 @@ export default class Home extends Component {
                   </TouchableOpacity>
               }
               keyExtractor = {item=>item.id.toString()}
-              refreshControl={
-                <RefreshControl
-                  refreshing={this.state.refreshing}
-                  onRefresh={this.onRefresh.bind(this)}
-                />
-              }
           />
 
         }
@@ -152,7 +173,7 @@ const styles = StyleSheet.create({
    },
    inliii:{
       flexDirection:'row',
-      backgroundColor:'yellow',
+      backgroundColor:'#99FF33',
       marginBottom:5,
    },
 });

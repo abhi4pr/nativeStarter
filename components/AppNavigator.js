@@ -11,6 +11,7 @@ import SingleScreen from './Single';
 import customimg from './customimg';
 import ForgetpassScreen from './Forgetpass';
 import LogoutScreen from './Logout';
+import SearchScreen from './Search';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -30,7 +31,6 @@ class AuthLoadingScreen extends Component {
 
   async loadData(){
     const userData = await AsyncStorage.getItem('user');
-    //this.props.navigation.navigate(userData == 'user' ? 'App' : 'Auth');
     if(userData){
       this.props.navigation.navigate('Home');
     }
@@ -41,27 +41,20 @@ class AuthLoadingScreen extends Component {
   
 }
 
+const rightNavigator = createStackNavigator({
+  Home: { screen: HomeScreen },
+  Single: { screen: SingleScreen },      
+  Profile: { screen: ProfileScreen },
+  Search: { screen: SearchScreen },  
+  Logout: { screen: LogoutScreen },    
+});
+
 const AppDrawerNavigator = createDrawerNavigator({
 
-  Home: { screen : HomeScreen,
+  Dada: { screen : rightNavigator,
     navigationOptions: () => ({
       title: 'Home',
     }) 
-  },
-  Profile: { screen : ProfileScreen,
-    navigationOptions: () => ({
-      title: 'Profile',
-    }) 
-  },
-  Single: { screen : SingleScreen,
-    navigationOptions: () => ({
-      drawerLabel: ()=>null,
-    })
-  },
-  Logout: { screen : LogoutScreen,
-    navigationOptions: () => ({
-      title: 'Logout',
-    })
   },
 },
   {

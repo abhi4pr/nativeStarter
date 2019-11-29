@@ -66,7 +66,7 @@ export default class Register extends Component {
   render() {
     return (
         <View>
-          <ImageBackground source={require('../assets/bgr.jpg')} style={styles.container} >
+          <ImageBackground source={require('../assets/check3.jpg')} style={styles.container} >
             <TextInput
              placeholder = "Name"
              style = {styles.input1}
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     marginLeft:45,
   }, 
   btnstyle1:{
-    backgroundColor:'blue',
+    backgroundColor:'#00cc99',
     marginTop:40,
     width:285,
     height:40,

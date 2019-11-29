@@ -1,35 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Component} from 'react';
 import {ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, View, Button, TextInput, TouchableOpacity, ListView, Image} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-community/async-storage';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const Single = props => {
+export default class Single extends Component {
 
-   const [dataSource, handleDataSource] = useState([]);
-   const [loader, loadered] = useState(true);
+  static navigationOptions = { title:'Details' }
 
-   useEffect(() => {
-      const { id } = props.navigation.state.params;
-      fetch('https://priyaransore.com/balance/api/teachdetails/'+id, {
-            method: 'GET',
-            headers: { "Content-Type": "application/json" }
-        }).then(function(response) {
-           return response.json();            
-        }).then(function(member) {
-            handleDataSource(member);
-            setTimeout(() => {
-              loadered(false)},3000);
-        }.bind(this)).catch(err => {
-           console.log('caught it!',err);
-        })
-   }, [props.navigation.state.params])
+  constructor(props) {
+    super(props);
 
+    this.state = {
+        dataSource:[],
+        loader:true
+    };
+  }
+
+   componentDidMount(){
+    const { id } = this.props.navigation.state.params;
+    fetch('https://priyaransore.com/balance/api/teachdetails/'+id, {
+          method: 'GET',
+          headers: { "Content-Type": "application/json" }
+      }).then(function(response) {
+         return response.json();            
+      }).then(function(member) {
+          this.setState({ 
+            dataSource: member,
+            loader: false
+          })
+      }.bind(this)).catch(err => {
+         console.log('caught it!',err);
+      })
+   }
+
+   render(){
 
     return (
       
         <View style={{flex:1}}>
-            { loader ? 
+            { this.state.loader ? 
 
           <ActivityIndicator 
             color = 'red'
@@ -37,63 +47,75 @@ const Single = props => {
             style={{marginTop:120}}
           /> :
 
+              <ScrollView> 
                 <View> 
-                  <Image style = {styles.imgstyle} source={require('../assets/single.jpg')} />
-                  <Text style = {styles.text}>
-                    {dataSource.uname}
-                  </Text>
-                  <View style={styles.info}>
-                      <Icon name="ios-arrow-dropright" size={30} color="green" /> 
-                      <Text> {"         "} </Text>
-                      <Icon name="md-call" size={30} color="#900" />
-                      <Text> {" "} </Text>
-                      <Text style={{ fontSize:21 }}> {dataSource.unumber} </Text>
+                  <Image style = {styles.imgstyle} source={require('../assets/sss.jpg')} />
+                  
+                  <View>
+                    <Text style = {styles.upertext}> NAME </Text>
+                    <Text style = {styles.lowertext}>
+                      {this.state.dataSource.uname}
+                    </Text>
                   </View>
 
-                  <View style={styles.info}>
-                      <Icon name="ios-arrow-dropright" size={30} color="green" /> 
-                      <Text> {"         "} </Text>
-                      <Icon name="md-map" size={30} color="#900" />
-                      <Text> {" "} </Text>
-                      <Text style={{ fontSize:20, flex:1 }}> {dataSource.uaddress} </Text>
+                  <View>
+                    <Text style = {styles.upertext}> NUMBER </Text>
+                    <Text style = {styles.lowertext}>
+                      {this.state.dataSource.unumber}
+                    </Text>
                   </View>
 
-                  <View style={styles.info}>
-                      <Icon name="ios-arrow-dropright" size={30} color="green" /> 
-                      <Text> {"         "} </Text>
-                      <Icon name="md-mail" size={30} color="#900" />
-                      <Text> {" "} </Text>
-                      <Text style={{ fontSize:17, flex:1 }}> {dataSource.uemail} </Text>
+                  <View>
+                    <Text style = {styles.upertext}> ADDRESS </Text>
+                    <Text style = {styles.lowertext}>
+                      {this.state.dataSource.uaddress}
+                    </Text>
                   </View>
 
-                  <View style={styles.info}>
-                      <Icon name="ios-arrow-dropright" size={30} color="green" /> 
-                      <Text> {"         "} </Text>
-                      <Icon name="md-notifications-outline" size={30} color="#900" />
-                      <Text> {" "} </Text>
-                      <Text style={{ fontSize:20, flex:1 }}> {dataSource.uplace} </Text>
-                  </View>                  
+                  <View>
+                    <Text style = {styles.upertext}> EMAIL </Text>
+                    <Text style = {styles.lowertext}>
+                      {this.state.dataSource.uemail}
+                    </Text>
+                  </View>
+
+                  {this.state.dataSource.uroll == 'teacher' ?
+                    <View style={{marginBottom:40}}>
+                      <Text style = {styles.upertext}> MODE </Text>
+                      <Text style = {styles.lowertext}>
+                        {this.state.dataSource.uplace}
+                      </Text>
+                    </View>
+                   : null 
+                  }
+
                 </View>             
+              </ScrollView>   
           }
         </View>
       
     )
+  }  
 }
 
 const styles = StyleSheet.create({
 
   imgstyle:{
     width:400,
-    height:200,
+    height:230,
   },
-  text:{
-    marginTop:40,
-    marginLeft:90,
-    marginRight:100,
-    fontSize:25,
-    color:'blue',
+  upertext:{
+    marginTop:30,
+    marginLeft:40,
+    marginRight:30,
+    fontSize:17,
+    color:'#00ffff',
     borderBottomWidth: 2,
-    borderBottomColor:'blue',
+    borderBottomColor:'#00ffff',
+  },
+  lowertext:{
+    marginLeft:45,
+    fontSize:18,
   },
   info:{
     flexDirection:'row',
@@ -102,5 +124,3 @@ const styles = StyleSheet.create({
     marginTop:30,
   }, 
 });
-
-export default Single; 

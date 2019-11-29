@@ -79,13 +79,9 @@ export default class Profile extends Component {
           headers: { 'Content-Type': 'application/json'},
           body: JSON.stringify(data)
      }).then((response) => {
-         // AsyncStorage.mergeItem('user', JSON.stringify(data), () => {
-         //  AsyncStorage.getItem('user', (err, result) => {
-         //   console.log(result);
-         //  });
-         // });
-        Toast.show('You updated your profile');   
-        this.props.navigation.navigate('Home');
+         Toast.show('You updated your profile');   
+         AsyncStorage.removeItem('user');
+         this.props.navigation.navigate('Login');
      }).catch((error) => {
         console.error(error); 
      });
@@ -121,7 +117,7 @@ export default class Profile extends Component {
     return (
       <ScrollView>
         <View>
-          <ImageBackground source={require('../assets/bgr.jpg')} style={styles.container} >
+          <ImageBackground source={require('../assets/check2.jpg')} style={styles.container} >
             
           {this.state.upic === null ? 
 

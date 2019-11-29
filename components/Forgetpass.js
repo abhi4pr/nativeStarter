@@ -40,7 +40,7 @@ export default class Forgetpass extends Component {
   render() {
     return (
         <View style={styles.container}>
-          <ImageBackground source={require('../assets/bgl.jpg')} style={styles.container} >
+          <ImageBackground source={require('../assets/check2.jpg')} style={styles.container} >
             <TextInput
              placeholder = "Email"
              style = {styles.input1}

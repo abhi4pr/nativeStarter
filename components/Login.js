@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, StyleSheet, Text, View, Button, TextInput, TouchableOpacity, ImageBackground} from 'react-native';
+import {NetInfo, Image, Alert, StyleSheet, Text, View, Button, TextInput, TouchableOpacity, ImageBackground} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -15,13 +15,6 @@ export default class Login extends Component {
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }  
-
-    // async componentDidMount() {
-    //   const userData = await AsyncStorage.getItem('user');
-    //   if(userData){
-    //     this.props.navigation.navigate('Home');      
-    //   }
-    // }
 
    handleSubmit(event){
 
@@ -55,7 +48,7 @@ export default class Login extends Component {
             }
         })
        .catch((error) => {
-        Toast.show('Please enter correct data');
+        Toast.show('You are not connected to internet');
      });
     }   
    }
@@ -63,7 +56,10 @@ export default class Login extends Component {
   render() {
     return (
         <View style={styles.container}>
-          <ImageBackground source={require('../assets/bgl.jpg')} style={styles.container} >
+          <ImageBackground source={require('../assets/check1.jpg')} style={styles.container} >
+            
+            <Image style={styles.bydefault} source={require('../assets/logo.png')} />
+
             <TextInput
              placeholder = "Email"
              style = {styles.input1}
@@ -131,22 +127,30 @@ const styles = StyleSheet.create({
     marginRight:45,
   },
   btnstyle:{
-    backgroundColor:'red',
+    backgroundColor:'#669900',
     marginTop:40,
     width:110,
     height:55,
     marginLeft:45,
   },
   btn:{
-    backgroundColor:'blue',
+    backgroundColor:'#00ff99',
     marginTop:40,
     width:120,
     height:55,
-    marginRight:45,
+    marginRight:50,
   },
   samerow:{
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  bydefault:{
+    width:150,
+    height:150,
+    marginLeft:110,
+    marginTop:50,
+    marginBottom:-110,
+    borderRadius:90,
   },
 });
